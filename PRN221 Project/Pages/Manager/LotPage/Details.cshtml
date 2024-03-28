@@ -1,0 +1,122 @@
+﻿@page
+@model PRN221_Project.Pages.Manager.LotPage.DetailsModel
+
+@{
+    ViewData["Title"] = "LotDetail";
+    Layout = "_LayoutManager";
+
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<div>
+    <h4>Lot: @Model.Lot.LotCode</h4>
+    <table class="table table-hover">
+        <thead style="background-color: #51B848; text-align: center" class="text-white">
+            <tr>
+                <th>
+                    Lot Code
+                </th>
+                <th>
+                    Import Date
+                </th>
+                <th>
+                    Note
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Account Name
+                </th>
+                <th>
+                    Partner Name
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="text-center">
+                <td>
+                    @Html.DisplayFor(model => model.Lot.LotCode)
+                </td>
+                <td>
+                    @Model.Lot.DateIn.ToString("d")
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Lot.Note)
+                </td>
+                <td>
+                    @if (@Model.Lot.Status == 1)
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Lot.Account.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Lot.Partner.Name)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h4>Details</h4>
+    <table class="table table-hover">
+        <thead style="background-color: #034ea2; text-align: center" class="text-white">
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Partner Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in Model.LotDetails)
+            {
+                <tr class="text-center">
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Partner.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Quantity)
+                    </td>
+                    <td>
+                        @if (detail.Status == 1)
+                        {
+                            <span class="text-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Inactive</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div>
+    <a asp-page="Index" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+</div>

@@ -1,0 +1,65 @@
+﻿@page
+@model PRN221_Project.Pages.Manager.CategoryPage.BanCategoryModel
+
+@{
+    ViewData["Title"] = "BanCategory";
+    Layout = "_LayoutManager";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<div>
+    <h4>Category Ban</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            Code
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category.CategoryCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @switch (Model.Category.Status)
+            {
+                case 0:
+                    {
+                        <span class="text-danger">In-active</span>
+                    }
+                    break;
+                case 1:
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    break;
+            }
+        </dd>
+    </dl>
+    <span class="text-danger">
+        @ViewData["Notification"]
+    </span>
+    <form method="post">
+        <input type="hidden" asp-for="Category.CategoryId" />
+        
+        @if (Model.Category.Status == 1)
+        {
+            <input type="hidden" asp-for="Category.Status" value="1" />
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button>
+        }
+        else if (Model.Category.Status == 0)
+        {
+            <input type="hidden" asp-for="Category.Status" value="0" />
+            <button type="submit" style="background-color: #51b848" class="btn text-white"><i class="fa-solid fa-circle-check"></i></button>
+        }
+        <a asp-page="./ListCategory" class="btn text-white" style="background-color: #034ea2"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </form>
+</div>

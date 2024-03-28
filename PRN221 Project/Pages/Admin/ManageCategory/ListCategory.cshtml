@@ -1,0 +1,100 @@
+﻿@page
+@model PRN221_Project.Pages.Admin.ManageCategory.ListCategoryModel
+
+@{
+    ViewData["Title"] = "ListCategory";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+
+    int x = 0;
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row justify-content-lg-start">
+                <div class="col-4">
+                    <h3>Categories management</h3>
+                </div>
+                <div class="col-3">
+                    <form class="d-md-inline-flex" role="search" method="post">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" asp-for="SearchText">
+                        <button class="btn btn-primary" style="color: #fff" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead style="background-color: #black; text-align: center" class="text-white">
+        <tr>
+            <th>No.</th>
+            <th>
+                Code
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Category)
+        {
+            <tr>
+                <td class="text-center">@(++x)</td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.CategoryCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="text-center">
+                    @if (item.Status == 1)
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    else if (item.Status == 0)
+                    {
+                        <span class="text-danger">Inactive</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<style>
+    .horizontal-pagination {
+        display: flex;
+        justify-content: center;
+    }
+
+        .horizontal-pagination ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .horizontal-pagination li {
+            margin-right: 5px;
+        }
+</style>
+<div class="horizontal-pagination">
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                <a asp-page="./ListCategory" asp-route-pageIndex="@i" class="page-link">@i</a>
+            </li>
+        }
+    </ul>
+</div>

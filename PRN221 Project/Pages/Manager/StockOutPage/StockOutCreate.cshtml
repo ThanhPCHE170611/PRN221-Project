@@ -1,0 +1,69 @@
+﻿@page
+@model PRN221_Project.Pages.Manager.StockOutCreateModel
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_LayoutManager";
+}
+
+<h1>Create</h1>
+<h4>StockOut</h4>
+<hr />
+<form method="post">
+    <div class="row">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <span class="form-control">@ViewBag.AccountId</span>
+            </div>
+            <div class="form-group">
+                Partner
+                <select asp-for="Partner.PartnerId" class="form-control" asp-items="ViewBag.PartnerId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockOut.Note" class="control-label"></label>
+                <input asp-for="StockOut.Note" class="form-control" />
+                <span asp-validation-for="StockOut.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <a asp-page="./StockOutList" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="col-md-8">
+            @for (int i = 0; i < 5; i++)
+            {
+                <div class="form-group row">
+                    <div class="col-md-8">
+                        <label for="Products[@i].ProductId" class="control-label">Product Name</label>
+                        <select name="Products[@i].ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="StockOutDetails[@i].Quantity" class="control-label">Quantity</label>
+                        <input name="StockOutDetails[@i].Quantity" class="form-control" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var duplicateError = '@ViewData["Error"]';
+        if (duplicateError) {
+            showErrorPopup(duplicateError);
+        }
+
+        function showErrorPopup(errorMessage) {
+            alert(errorMessage);
+        }
+    </script>
+}

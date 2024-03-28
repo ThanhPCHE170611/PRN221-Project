@@ -1,0 +1,172 @@
+﻿@page
+@model PRN221_Project.Pages.Admin.ManageAccount.ImportFromFileModel
+@{
+    ViewData["Title"] = "ImportAccountFromFile";
+    Layout = "_LayoutAdmin";
+    var x = 0;
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Optional custom styles */
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+            .upload-area:hover {
+                background-color: #f9f9f9;
+            }
+
+        .file-template-link {
+            margin-top: 8px; /* Adjust as needed */
+            display: inline-block;
+            color: #007bff; /* Bootstrap primary color */
+            text-decoration: none;
+        }
+
+            .file-template-link:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form method="post" enctype="multipart/form-data">
+                <div class="upload-area" id="uploadArea">
+                    <h4>Click to select files</h4>
+                    <input type="file" id="fileInput" name="ExcelFile" style="display: none;" accept=".xls,.xlsx">
+                </div>
+                <div id="fileList"></div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button type="submit" id="uploadButton" class="btn btn-primary btn-block">Upload</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="file-template-link" href="./ImportFromFile?go=downloadFile">Download File Template</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@{
+    if(Model.AccountList != null && Model.AccountList.Count() > 0)
+    {
+        <h1 class="align-self-lg-center">Add Account List Successful!</h1>
+        <table class="table table-hover">
+            <thead style="background-color: black; text-align: center" class="text-white">
+                <tr>
+                    <th>No.</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountList[0].AccountCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountList[0].Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountList[0].Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountList[0].Password)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountList[0].Role)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountList[0].Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AccountList[0].Status)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AccountList)
+                {
+                    <tr>
+                        <td class="text-center">@(++x)</td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.AccountCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Password)
+                        </td>
+                        <td class="text-center">
+                            @if (item.Role == 0)
+                            {
+                                <span>Admin</span>
+                            }
+                            else if (item.Role == 1)
+                            {
+                                <span>StoreKeeper</span>
+                            }
+                            else
+                            {
+                                <span>Manager</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td class="text-center">
+                            @if (item.Status == 1)
+                            {
+                                <span class="text-success">Active</span>
+                            }
+                            else if (item.Status == 0)
+                            {
+                                <span class="text-danger">Banned</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } else
+    {
+        <div class="form-group text-danger">
+                @ViewData["error"]
+            </div>
+    }
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // File upload area
+            var uploadArea = document.getElementById('uploadArea');
+            var fileInput = document.getElementById('fileInput');
+            var fileList = document.getElementById('fileList');
+
+            uploadArea.addEventListener('click', function () {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function () {
+                fileList.innerHTML = ''; // Clear previous file list
+
+                var files = fileInput.files;
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var listItem = document.createElement('div');
+                    listItem.textContent = file.name + ' - ' + (file.size / 1024).toFixed(2) + ' KB';
+                    fileList.appendChild(listItem);
+                }
+            });
+        });
+    </script>
+}
+

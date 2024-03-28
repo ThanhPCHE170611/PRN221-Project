@@ -1,0 +1,66 @@
+﻿@page
+@model PRN221_Project.Pages.Admin.ManageAccount.AccountCreateModel
+
+@{
+    ViewData["Title"] = "AccountCreate";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<h4>Create Account</h4>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Account.AccountCode" class="control-label">Code</label>
+                <input asp-for="Account.AccountCode" class="form-control" />
+                <span asp-validation-for="Account.AccountCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Email" class="control-label"></label>
+                <input asp-for="Account.Email" class="form-control" />
+                <span asp-validation-for="Account.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Name" class="control-label"></label>
+                <input asp-for="Account.Name" class="form-control" />
+                <span asp-validation-for="Account.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Password" class="control-label"></label>
+                <input asp-for="Account.Password" class="form-control" />
+                <span asp-validation-for="Account.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Role" class="control-label"></label>
+                <select asp-for="Account.Role" class="form-control">
+                    <option value="1">Storekeeper</option>
+                    <option value="2">Manager</option>
+                </select>
+                <span asp-validation-for="Account.Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account.Phone" class="control-label"></label>
+                <input asp-for="Account.Phone" class="form-control" />
+                <span asp-validation-for="Account.Phone" class="text-danger"></span>
+            </div>
+            <br />  
+            <div class="form-group text-danger">
+                @ViewData["notification"]
+            </div>
+            <div class="form-group">
+                <a asp-page="./ListAccount" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

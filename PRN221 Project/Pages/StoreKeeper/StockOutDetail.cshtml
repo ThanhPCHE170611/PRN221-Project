@@ -1,0 +1,104 @@
+﻿@page
+@model PRN221_Project.Pages.StoreKeeper.StockOutDetailModel
+
+@{
+    ViewData["Title"] = "StockOutDetail";
+    Layout = "_StoreKeeper";
+
+    int x = 0;
+    int y = 0;
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<div>
+    <h4>Stock Out: @Model.StockOut.Account.Name - @Model.StockOut.Partner.Name</h4>
+    <table class="table table-hover">
+        <thead style="background-color: #51B848; text-align: center" class="text-white">
+            <tr>
+                <th>No.</th>
+                <th>
+                    Export Date
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StockOut.Note)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StockOut.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StockOut.Account)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StockOut.Partner)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@(++x)</td>
+                <td class="text-center">
+                    @Html.DisplayFor(model => model.StockOut.DateOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StockOut.Note)
+                </td>
+                <td>
+                    @if (@Model.StockOut.Status == 1)
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="text-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StockOut.Account.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.StockOut.Partner.Name)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h4>Details</h4>
+    <table class="table table-hover">
+        <thead style="background-color: #034ea2; text-align: center" class="text-white">
+            <tr>
+                <th>No.</th>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @ViewData["Notification"]
+            @foreach (var detail in Model.StockOutDetails)
+            {
+                <tr class="text-center">
+                    <td>@(++y)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => detail.Quantity)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div>
+    <a asp-page="StockOutList" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+</div>

@@ -1,0 +1,116 @@
+﻿@page
+@model PRN221_Project.Pages.Admin.ManageStockOut.ListStockOutModel
+
+@{
+    ViewData["Title"] = "ListStockOut";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+
+    int x = 0;
+}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row justify-content-lg-start">
+                <div class="col-3">
+                    <h3>Products management</h3>
+                </div>
+                <div class="col-3">
+                    <form class="d-md-inline-flex" role="search" method="get">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" asp-for="SearchText">
+                        <button class="btn btn-primary" style="color: #fff" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-hover">
+    <thead style="background-color: black; text-align: center" class="text-white">
+        <tr>
+            <th>No.</th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockOut[0].DateOut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockOut[0].Note)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockOut[0].Status)
+            </th>
+            <th>
+                Account
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StockOut[0].Partner.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.StockOut)
+        {
+            <tr>
+                <td class="text-center">@(++x)</td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.DateOut)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                <td class="text-center">
+                    @if (item.Status == 1)
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    else if (item.Status == 0)
+                    {
+                        <span class="text-danger">Inactive</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Account.AccountCode) - @Html.DisplayFor(modelItem => item.Account.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Partner.Name)
+                </td>
+                <td>
+                    <a asp-page="./StockOutEdit" asp-route-id="@item.StockOutId"><i class="fa-solid fa-pen"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<style>
+    .horizontal-pagination {
+        display: flex;
+        justify-content: center;
+    }
+
+        .horizontal-pagination ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+
+        .horizontal-pagination li {
+            margin-right: 5px;
+        }
+</style>
+
+<div class="horizontal-pagination">
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                <a asp-page="./ListStockOut" asp-route-pageIndex="@i" class="page-link">@i</a>
+            </li>
+        }
+    </ul>
+</div>

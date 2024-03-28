@@ -1,0 +1,96 @@
+﻿@page
+@{
+    string name = HttpContext.Session.GetString("accountName");
+    if (HttpContext.Session.GetString("account") == "admin")
+    {
+        Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+    }
+    else if (HttpContext.Session.GetString("account") == "manager")
+    {
+        Layout = "/Pages/Shared/_LayoutManager.cshtml";
+    }
+    else if (HttpContext.Session.GetString("account") == "storekeeper")
+    {
+        Layout = "/Pages/Shared/_StoreKeeper.cshtml";
+    }
+}
+<style>
+    .fixed-height-container {
+        height: 300px;
+    }
+
+    #messagesList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+
+</style>
+@{
+    string CheckSession = HttpContext.Session.GetString("accountName");
+    if (CheckSession != null)
+    {
+        <div class="container" style="border-radius: 8px; border: 2px solid #034ea2; padding: 20px">
+
+            <div class="fixed-height-container">
+                <div class="row">
+                    <div class="col-12">
+                        <ul id="messagesList" class="list-unstyled"></ul>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <div class="row p-1 align-items-center">
+                    <div class="col-md-3" style="font-weight:bold">Username</div>
+                    <div class="col-md-9">
+                        @if (HttpContext.Session.GetString("account") == "admin")
+                        {
+                            <input type="text" id="userInput" value='@($"{name} (Admin)")' class="form-control border-success" readonly style="background-color: lightgray" />
+                        }
+                        else if (HttpContext.Session.GetString("account") == "manager")
+                        {
+                            <input type="text" id="userInput" value='@($"{name} (Manager)")' class="form-control border-success" readonly style="background-color: lightgray" />
+                        }
+                        else if (HttpContext.Session.GetString("account") == "storekeeper")
+                        {
+                            <input type="text" id="userInput" value='@($"{name} (Storekeeper)")' class="form-control border-success" readonly style="background-color: lightgray" />
+                        }
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="col-md-3" style="font-weight:bold">Message</div>
+                    <div class="col-md-9">
+                        <textarea type="text" class="form-control border-success" id="messageInput" rows="7" placeholder="Message..."></textarea>
+                    </div>
+                </div>
+                <div class="row p-1">
+                    <div class="col-12 text-end">
+                        <input type="button" id="sendButton" value="Send Message" class="btn btn-success" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="~/js/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/chat.js"></script>
+    }
+}
+@{
+    else
+    {
+        <h1 style="text-align: center; color: red;">You must be logged in</h1>
+        <div>
+            <a asp-page="/Login" class="btn btn-danger">Back to Login</a>
+        </div>
+    }
+}
+

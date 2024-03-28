@@ -1,0 +1,68 @@
+﻿@page
+@model PRN221_Project.Pages.Manager.PartnerPage.CreateModel
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_LayoutManager";
+}
+
+<h4>Create Partner</h4>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                Code
+                <input asp-for="Partner.PartnerCode" class="form-control"/>
+                <span asp-validation-for="Partner.PartnerCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Name
+                <input asp-for="Partner.Name" class="form-control" />
+                <span asp-validation-for="Partner.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <a asp-page="./Index" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var duplicateError = '@ViewData["Error"]';
+        if (duplicateError) {
+            showErrorPopup(duplicateError);
+        }
+
+        function showErrorPopup(errorMessage) {
+            alert(errorMessage);
+        }
+
+        function validateProductCode() {
+            var productCodeInput = document.getElementById("Partner_PartnerCode");
+            var productCodeValue = productCodeInput.value.trim();
+            var regex = /^part\d{3}$/i;
+
+            if (!regex.test(productCodeValue)) {
+                alert("Partner Code must start with 'part' or 'PART' followed by 3 digits.");
+                productCodeInput.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            if (!validateProductCode()) {
+                event.preventDefault();
+            }
+        });
+    </script>
+}
