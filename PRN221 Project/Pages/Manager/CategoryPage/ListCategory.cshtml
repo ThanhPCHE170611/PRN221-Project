@@ -1,0 +1,99 @@
+﻿@page
+@model ListCategoryModel
+
+@{
+    ViewData["Title"] = "ListCategory";
+    Layout = "_LayoutManager";
+    int x = 0;
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row justify-content-lg-start">
+                <div class="col-4">
+                    <h3>Categories management</h3>
+                </div>
+                <div class="col-3">
+                    <form class="d-md-inline-flex" role="search" method="get">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" asp-for="SearchText">
+                        <button class="btn btn-primary" style="color: #fff" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <p>
+                        <a asp-page="./CreateCategory" class="btn btn-primary"><i class="fa-solid fa-plus"></i></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead style="background-color: black; vertical-align:middle" class="text-white text-center">
+        <tr>
+            <td>No.</td>
+            <th>
+                @Html.DisplayNameFor(model => model.Category[0].CategoryCode)
+            </th>
+            <th style="text-align:center">
+                @Html.DisplayNameFor(model => model.Category[0].Name)
+            </th>
+            <th style="text-align:center">
+                @Html.DisplayNameFor(model => model.Category[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Category)
+        {
+            <tr>
+                <td class="text-center">@(++x)</td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.CategoryCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td style="text-align: center">
+                    @switch (item.Status)
+                    {
+                        case 0:
+                            {
+                                <span class="text-danger">In-active</span>
+                            }
+                            break;
+                        case 1:
+                            {
+                                <span class="text-success">Active</span>
+                            }
+                            break;
+                    }
+                </td>
+                <td class="text-end">
+                    <a asp-page="./EditCategory" asp-route-id="@item.CategoryId" class="btn btn-primary"><i class="fa-solid fa-pen"></i></a>
+                    <a asp-page="./BanCategory" asp-route-id="@item.CategoryId" class="btn btn-primary"><i class="fa-solid fa-ban"></i></a>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <ul class="pagination">
+        @for (int b = 1; b <= Model.totalPages; b++)
+        {
+            <li class="page-item @(b == Model.curentPage ? "active" : "")">
+                <a asp-page="./ListCategory" asp-route-curentPage="@b" class="page-link">@b</a>
+            </li>
+        }
+    </ul>
+</div>

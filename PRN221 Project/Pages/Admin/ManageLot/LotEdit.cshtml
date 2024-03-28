@@ -1,0 +1,83 @@
+﻿@page
+@model PRN221_Project.Pages.Admin.ManageLot.LotEditModel
+
+@{
+    ViewData["Title"] = "LotEdit";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+    int x = 0;
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<h4>Edit Lot</h4>
+
+<h4>Lot: @Model.Lot.LotCode</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Lot.LotId" />
+            <div class="form-group">
+                <label asp-for="Lot.Account.Email" class="control-label"></label>
+                <select asp-for="Lot.AccountId" class="form-control" asp-items="ViewBag.AccountId"></select>
+                <span asp-validation-for="Lot.AccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lot.PartnerId" class="control-label">Partner</label>
+                <select asp-for="Lot.PartnerId" class="form-control" asp-items="ViewBag.PartnerId"></select>
+                <span asp-validation-for="Lot.PartnerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lot.Note" class="control-label"></label>
+                <textarea asp-for="Lot.Note" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Lot.Note" class="text-danger"></span>
+            </div>
+            <hr />
+            <table class="table table-hover">
+                <thead style="text-align:center; background:#51B848; color:#FFF">
+                    <tr>
+                        <th>No.</th>
+                        <th width="250px">Product Name</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.LotDetail.Count; i++)
+                    {
+                        <tr>
+                            <td>@(++x)</td>
+                            <td>
+                                <input asp-for="@Model.LotDetail[i].LotDetailId" name="LotDetail[@i].LotDetailId" class="form-control" type="hidden" />
+                                <div class="form-group">
+                                    <label asp-for="LotDetail" class="control-label">@Html.DisplayFor(modelItem => Model.LotDetail[i].Product.Name)</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input asp-for="@Model.LotDetail[i].Quantity" name="LotDetail[@i].Quantity" class="form-control" />
+                                    <span asp-validation-for="@Model.LotDetail[i].Quantity" class="text-danger"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <br />
+            <div class="form-group">
+                <a asp-page="./ListLot" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

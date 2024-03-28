@@ -1,0 +1,91 @@
+﻿@page
+@model PRN221_Project.Pages.Admin.ManageAccount.UpdateStatusAccountModel
+
+@{
+    ViewData["Title"] = "UpdateStatusAccount";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<h4>Are you sure you want to update @Model.Account.Name?</h4>
+<div>
+    <h4>Account: @Model.Account.AccountCode</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Code
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.AccountCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Role)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Account.Role == 1)
+            {
+                <span>StoreKeeper</span>
+            }
+            else
+            {
+                <span>Manager</span>
+            }
+
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Account.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @switch (Model.Account.Status)
+            {
+                case 0:
+                    {
+                        <span class="text-danger">In-active</span>
+                    }
+                    break;
+                case 1:
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    break;
+            }
+        </dd>
+    </dl>
+
+    <form method="post">
+        <input type="hidden" asp-for="Account.AccountId" />
+
+        @if (Model.Account.Status == 1)
+        {
+            <input type="hidden" asp-for="Account.Status" value="1" />
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button>
+        }
+        else if (Model.Account.Status == 0)
+        {
+            <input type="hidden" asp-for="Account.Status" value="0" />
+            <button type="submit" style="background-color: #51b848" class="btn text-white"><i class="fa-solid fa-circle-check"></i></button>
+        }
+        <a asp-page="./ListAccount" class="btn text-white" style="background-color: #034ea2"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </form>
+</div>

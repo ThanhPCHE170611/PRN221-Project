@@ -1,0 +1,86 @@
+﻿@page
+@model PRN221_Project.Pages.Manager.LotPage.IndexModel
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+@{
+    ViewData["Title"] = "Lot Index";
+    Layout = "_LayoutManager";
+    int x = 0;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row justify-content-lg-start">
+                <div class="col-3">
+                    <h3>Lots management</h3>
+                </div>
+                <div class="col-3">
+                    <form class="d-md-inline-flex" role="search" method="get">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" asp-for="SearchText">
+                        <button class="btn btn-primary" style="color: #fff" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <p>
+                        <a asp-page="./Create" class="btn btn-primary"><i class="fa-solid fa-download"></i></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table class="table">
+        <thead style="background-color: black; color: #fff; text-align: center">
+            <tr>
+                <th>No.</th>
+                <th>Lot Code</th>
+                <th>Import Date</th>
+                <th>Note</th>
+                <th>Status</th>
+                <th>Account Name</th>
+                <th>Partner Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Lot)
+            {
+                <tr>
+                    <td class="text-center"s>@(++x)</td>
+                    <td class="text-center">
+                        <a asp-page="./Details" asp-route-id="@item.LotId" style="text-decoration: none;">
+                            @Html.DisplayFor(modelItem => item.LotCode)
+                        </a>
+                    </td>
+                    <td class="text-center">@item.DateIn.ToString("d")</td>
+                    <td>@Html.DisplayFor(modelItem => item.Note)</td>
+                    <td class="text-center">
+                        @if (item.Status == 1)
+                        {
+                            <span class="text-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Inactive</span>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Account.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Partner.Name)</td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.LotId"><i class="fa-solid fa-pen"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <ul class="pagination">
+            @for (int b = 1; b <= Model.TotalPages; b++)
+            {
+                <li class="page-item @(b == Model.CurrentPage ? "active" : "")">
+                    <a asp-page="./Index" asp-route-currentPage="@b" class="page-link">@b</a>
+                </li>
+            }
+        </ul>
+    </div>

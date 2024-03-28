@@ -1,0 +1,82 @@
+﻿@page
+@model PRN221_Project.Pages.Admin.ManageStockOut.StockOutEditModel
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+@{
+    ViewData["Title"] = "StockOutEdit";
+    Layout = "/Pages/Shared/_LayoutAdmin.cshtml";
+    int x = 0;
+}
+
+<h1>Stock Out Edit</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StockOut.StockOutId" />
+            <div class="form-group">
+                <label asp-for="StockOut.Account.Email" class="control-label"></label>
+                <select asp-for="StockOut.AccountId" class="form-control" asp-items="ViewBag.AccountId"></select>
+                <span asp-validation-for="StockOut.AccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockOut.Partner.Name" class="control-label">Partner</label>
+                <select asp-for="StockOut.PartnerId" class="form-control" asp-items="ViewBag.PartnerId"></select>
+                <span asp-validation-for="StockOut.PartnerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockOut.Note" class="control-label"></label>
+                <textarea asp-for="StockOut.Note" class="form-control"></textarea>
+                <span asp-validation-for="StockOut.Note" class="text-danger"></span>
+            </div>
+            <hr />
+            <table class="table table-hover">
+                <thead style="text-align:center; background:#51B848; color:#FFF">
+                    <tr>
+                        <th>No.</th>
+                        <th width="250px">Product Name</th>
+                        <th>Quantity
+                        <th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.StockOutDetails.Count; i++)
+                    {
+                        <tr>
+                            <td style="text-align:center">@(++x)</td>
+                            <td>
+                                <div class="form-group">
+                                    <input asp-for="@Model.StockOutDetails[i].StockOutDetailId" name="StockOutDetails[@i].StockOutDetailId" class="form-control" type="hidden" />
+                                    <label asp-for="StockOut" class="control-label">@Html.DisplayFor(modelItem => Model.StockOutDetails[i].Product.Name)</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input asp-for="@Model.StockOutDetails[i].Quantity" name="StockOutDetails[@i].Quantity" class="form-control" />
+                                    <span asp-validation-for="@Model.StockOutDetails[i].Quantity" class="text-danger"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <br />
+            <div class="form-group">
+                <a asp-page="ListStockOut" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,66 @@
+﻿@page
+@model PRN221_Project.Pages.Manager.StoragePage.BanStorageModel
+
+@{
+    ViewData["Title"] = "BanStorage";
+    Layout = "_LayoutManager";
+}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<h3>Ban StorageArea</h3>
+<div>
+    <h4>StorageArea</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StorageArea.AreaCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StorageArea.AreaCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StorageArea.AreaName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StorageArea.AreaName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StorageArea.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @switch (Model.StorageArea.Status)
+            {
+                case 0:
+                    {
+                        <span class="text-danger">In-active</span>
+                    }
+                    break;
+                case 1:
+                    {
+                        <span class="text-success">Active</span>
+                    }
+                    break;
+            }
+        </dd>
+    </dl>
+    <span class="text-danger">
+        @ViewData["Message"]
+    </span>
+    <form method="post">
+        <input type="hidden" asp-for="StorageArea.AreaId" />
+
+        @if (Model.StorageArea.Status == 1)
+        {
+            <input type="hidden" asp-for="StorageArea.Status" value="1" />
+            <button type="submit" class="btn btn-danger"><i class="fa-solid fa-ban"></i></button>
+        }
+        else if (Model.StorageArea.Status == 0)
+        {
+            <input type="hidden" asp-for="StorageArea.Status" value="0" />
+            <button type="submit" style="background-color: #51b848" class="btn text-white"><i class="fa-solid fa-circle-check"></i></button>
+        }
+        <a asp-page="./ListStorage" class="btn text-white" style="background-color: #034ea2"><i class="fa-solid fa-right-from-bracket"></i></a>
+    </form>
+</div>

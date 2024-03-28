@@ -1,0 +1,85 @@
+﻿@page
+@model PRN221_Project.Pages.Manager.ProductPage.EditModel
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "_LayoutManager";
+}
+
+<h4>Update Product</h4>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Product.ProductId" />
+            <div class="form-group">
+                <label asp-for="Product.ProductCode" class="control-label">Product Code</label>
+                <input asp-for="Product.ProductCode" class="form-control" readonly />
+                <span asp-validation-for="Product.ProductCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.CategoryId" class="control-label">Category Name</label>
+                <input asp-for="Product.CategoryId" class="form-control" readonly="" hidden />
+                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                <span class="form-control" style="background-color: #E9ECEF;">@Model.Product.Category.Name</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.AreaId" class="control-label">Area Name</label>
+                <select asp-for="Product.AreaId" class="form-control" asp-items="ViewBag.AreaId"></select>
+                <span asp-validation-for="Product.AreaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Name" class="control-label">Product Name</label>
+                <input asp-for="Product.Name" class="form-control" />
+                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.Quantity" class="control-label"></label>
+                <input asp-for="Product.Quantity" class="form-control" readonly="" />
+                <span asp-validation-for="Product.Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-4">
+                <a asp-page="./Index" class="btn text-white" style="background-color: #F37021"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var duplicateError = '@ViewData["Error"]';
+        if (duplicateError) {
+            showErrorPopup(duplicateError);
+        }
+
+        function showErrorPopup(errorMessage) {
+            alert(errorMessage);
+        }
+
+        function validateProductCode() {
+            var productCodeInput = document.getElementById("Product_ProductCode");
+            var productCodeValue = productCodeInput.value.trim();
+            var regex = /^prod\d{3}$/i;
+
+            if (!regex.test(productCodeValue)) {
+                alert("ProductCode must start with 'prod' or 'PROD' followed by 3 digits.");
+                productCodeInput.focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        document.querySelector('form').addEventListener('submit', function (event) {
+            if (!validateProductCode()) {
+                event.preventDefault();
+            }
+        });
+    </script>
+}
